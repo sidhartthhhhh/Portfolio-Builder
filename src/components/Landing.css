@@ -1,0 +1,105 @@
+/* src/components/LandingPage.css */
+.landing-page {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Verdana, sans-serif;
+  color: var(--text-color);
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: white;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  max-width: 600px;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 12px 28px;
+  font-size: 1rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #00aaff;
+  color: #fff;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #008ecc;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+.btn-secondary:hover {
+  border-color: #00aaff;
+  color: #00aaff;
+}
+
+.features {
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  background: var(--bg-color);
+}
+
+.feature {
+  max-width: 300px;
+  text-align: center;
+}
+
+.feature h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.feature p {
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+  .hero p {
+    font-size: 1rem;
+  }
+  .features {
+    flex-direction: column;
+    text-align: center;
+  }
+}

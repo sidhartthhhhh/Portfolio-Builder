@@ -1,9 +1,11 @@
-// src/components/Dashboard/Builder.jsx
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { auth, db } from "../../firebase/config";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import Profile from '../../components/Profile';
+import { auth, db } from "../../firebase//config"; // ⬅️ updated (to use new firebase config)
+import "../../index.css"; // ⬅️ updated (to use new dashboard styles)
+
 
 const Builder = () => {
   const navigate = useNavigate();
@@ -13,40 +15,34 @@ const Builder = () => {
   const [projects, setProjects] = useState("");
   const [theme, setTheme] = useState("light");
   const [loading, setLoading] = useState(true);
-
+  <Routes>
+  <Route path="/dashboard/profile" element={<Profile />} />
+  </Routes>
   useEffect(() => {
-  console.log("👀 Waiting for Firebase auth...");
-
-  const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-    console.log("✅ onAuthStateChanged triggered:", currentUser);
-
-    if (!currentUser) {
-      console.warn("⚠️ No user logged in.");
-      setLoading(false); // Important!
-      return;
-    }
-
-    const userDocRef = doc(db, "portfolios", currentUser.uid);
-    try {
-      const docSnap = await getDoc(userDocRef);
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        setAbout(data.about || "");
-        setSkills(data.skills || "");
-        setProjects(data.projects || "");
-      } else {
-        console.warn("⚠️ No document found for this user.");
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (!currentUser) {
+        setLoading(false);
+        return;
       }
-    } catch (error) {
-      console.error("❌ Firestore fetch error:", error.message);
-    } finally {
-      setLoading(false); // Important!
-    }
-  });
 
-  return () => unsubscribe();
-}, []);
+      const userDocRef = doc(db, "portfolios", currentUser.uid);
+      try {
+        const docSnap = await getDoc(userDocRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setAbout(data.about || "");
+          setSkills(data.skills || "");
+          setProjects(data.projects || "");
+        }
+      } catch (error) {
+        console.error("❌ Firestore fetch error:", error.message);
+      } finally {
+        setLoading(false);
+      }
+    });
 
+    return () => unsubscribe();
+  }, []);
 
   const handleSave = async () => {
     const currentUser = auth.currentUser;
@@ -100,67 +96,46 @@ const Builder = () => {
   if (loading) return <p>Loading your portfolio...</p>;
 
   return (
-    <div
-      style={{
-        backgroundColor: theme === "dark" ? "#121212" : "#fff",
-        color: theme === "dark" ? "#eee" : "#000",
-        minHeight: "100vh",
-        padding: "20px",
-      }}
-    >
-      <div style={{ display: "flex", gap: "30px", flexWrap: "wrap" }}>
-        {/* Builder Side */}
-        <div style={{ flex: 1, minWidth: "300px" }}>
-          <h2>🛠 Portfolio Builder</h2>
-          <textarea
-            rows="4"
-            placeholder="About Me"
-            value={about}
-            onChange={(e) => setAbout(e.target.value)}
-            style={{ width: "100%", marginBottom: "10px" }}
-          />
-          <textarea
-            rows="2"
-            placeholder="Skills (comma-separated)"
-            value={skills}
-            onChange={(e) => setSkills(e.target.value)}
-            style={{ width: "100%", marginBottom: "10px" }}
-          />
-          <textarea
-            rows="4"
-            placeholder="Projects (one per line)"
-            value={projects}
-            onChange={(e) => setProjects(e.target.value)}
-            style={{ width: "100%", marginBottom: "10px" }}
-          />
+    <div className="dashboard-wrapper"> {/* ⬅️ updated */}
+      <div className="builder-panel"> {/* ⬅️ updated */}
+        <h2>🛠 Portfolio Builder</h2>
+        <textarea
+          rows="4"
+          placeholder="About Me"
+          value={about}
+          onChange={(e) => setAbout(e.target.value)}
+        />
+        <textarea
+          rows="2"
+          placeholder="Skills (comma-separated)"
+          value={skills}
+          onChange={(e) => setSkills(e.target.value)}
+        />
+        <textarea
+          rows="4"
+          placeholder="Projects (one per line)"
+          value={projects}
+          onChange={(e) => setProjects(e.target.value)}
+        />
 
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginTop: "10px" }}>
-            <button onClick={handleSave}>💾 Save</button>
-            <button onClick={handleLogout}>🔒 Logout</button>
-            <button onClick={handleExport}>📤 Export</button>
-            <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
-              Toggle {theme === "light" ? "🌙 Dark" : "☀️ Light"}
-            </button>
-          </div>
+        <div className="builder-buttons"> {/* ⬅️ updated */}
+          <button onClick={handleSave}>💾 Save</button>
+          <button onClick={handleLogout}>🔒 Logout</button>
+          <button onClick={handleExport}>📤 Export</button>
+          <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
+            Toggle {theme === "light" ? "🌙 Dark" : "☀️ Light"}
+          </button>
         </div>
+      </div>
 
-        {/* Live Preview Side */}
-        <div
-          style={{
-            flex: 1,
-            minWidth: "300px",
-            borderLeft: "1px solid #ccc",
-            paddingLeft: "20px",
-          }}
-        >
-          <h2>👁 Live Preview</h2>
-          <h3>About Me</h3>
-          <p>{about}</p>
-          <h3>Skills</h3>
-          <ul>{skills.split(",").map((skill, i) => <li key={i}>{skill.trim()}</li>)}</ul>
-          <h3>Projects</h3>
-          <ul>{projects.split("\n").map((proj, i) => <li key={i}>{proj.trim()}</li>)}</ul>
-        </div>
+      <div className="preview-panel"> {/* ⬅️ updated */}
+        <h2>👁 Live Preview</h2>
+        <h3>About Me</h3>
+        <p>{about}</p>
+        <h3>Skills</h3>
+        <ul>{skills.split(",").map((skill, i) => <li key={i}>{skill.trim()}</li>)}</ul>
+        <h3>Projects</h3>
+        <ul>{projects.split("\n").map((proj, i) => <li key={i}>{proj.trim()}</li>)}</ul>
       </div>
     </div>
   );

@@ -1,0 +1,56 @@
+/* src/components/Profile.css */
+.profile-container {
+  min-height: 100vh;
+  background: linear-gradient(145deg, #0a0f3d, #0f173f);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.profile-card {
+  background-color: #1c1e4b;
+  color: #fff;
+  border-radius: 16px;
+  padding: 30px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.profile-photo {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #00f5ff;
+  margin-bottom: 20px;
+}
+
+.profile-name {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #00f5ff;
+}
+
+.profile-bio {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #ddd;
+}
+
+.resume-button {
+  background-color: #00f5ff;
+  color: #0a0f3d;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.resume-button:hover {
+  background-color: #00cfe1;
+}
